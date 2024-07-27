@@ -22,7 +22,7 @@ public class ConfigUtils {
         configFileName = configFile;
     }
 
-    public void preInit(File file) {
+    public void init(File file) {
         configFile = new File(file, configFileName);
         load();
         write();

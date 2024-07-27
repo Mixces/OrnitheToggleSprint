@@ -14,7 +14,7 @@ public class OrintheToggleSprint implements ModInitializer {
 	@Override
 	public void init() {
 		LOGGER.info("initializing example mod!");
-		ConfigOptions.INSTANCE.preInit(FabricLoader.getInstance().getConfigDir().toFile());
+		ConfigOptions.INSTANCE.init(FabricLoader.getInstance().getConfigDir().toFile());
 	}
 
 }
