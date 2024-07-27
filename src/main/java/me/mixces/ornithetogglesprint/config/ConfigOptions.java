@@ -8,7 +8,7 @@ public class ConfigOptions extends ConfigUtils {
     public static ConfigOptions INSTANCE = new ConfigOptions();
 
     public ConfigOptions() {
-        super("ornithetogglesprint.json");
+        super("togglesprint.json");
     }
 
 }
