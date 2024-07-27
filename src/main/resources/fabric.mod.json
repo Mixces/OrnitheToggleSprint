@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "ornithetogglesprint",
 	"version": "${version}",
-	"name": "OrnitheToggleSprint",
+	"name": "ToggleSprint",
 	"description": "Allows the user to toggle their sprint!",
 	"authors": [
 		"Mixces"
