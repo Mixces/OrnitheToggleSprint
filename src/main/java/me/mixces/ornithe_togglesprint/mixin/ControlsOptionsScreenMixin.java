@@ -1,6 +1,6 @@
-package me.mixces.ornithetogglesprint.mixin;
+package me.mixces.ornithe_togglesprint.mixin;
 
-import me.mixces.ornithetogglesprint.config.ConfigOptions;
+import me.mixces.ornithe_togglesprint.config.ConfigOptions;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.options.ControlsOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;

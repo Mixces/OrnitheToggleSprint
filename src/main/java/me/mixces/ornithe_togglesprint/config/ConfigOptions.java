@@ -1,4 +1,4 @@
-package me.mixces.ornithetogglesprint.config;
+package me.mixces.ornithe_togglesprint.config;
 
 public class ConfigOptions extends ConfigUtils {
 

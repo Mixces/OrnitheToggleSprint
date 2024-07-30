@@ -1,4 +1,4 @@
-package me.mixces.ornithetogglesprint.config;
+package me.mixces.ornithe_togglesprint.config;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,8 +1,8 @@
-package me.mixces.ornithetogglesprint.mixin;
+package me.mixces.ornithe_togglesprint.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import me.mixces.ornithetogglesprint.SprintHandler;
-import me.mixces.ornithetogglesprint.config.ConfigOptions;
+import me.mixces.ornithe_togglesprint.SprintHandler;
+import me.mixces.ornithe_togglesprint.config.ConfigOptions;
 import net.minecraft.client.entity.living.player.LocalClientPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

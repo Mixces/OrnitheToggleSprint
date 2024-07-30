@@ -16,8 +16,8 @@
 	"environment": "*",
 	"entrypoints": {
 		"init": [
-      "me.mixces.ornithetogglesprint.OrintheToggleSprint",
-      "me.mixces.ornithetogglesprint.SprintHandler"
+      "me.mixces.ornithe_togglesprint.OrintheToggleSprint",
+      "me.mixces.ornithe_togglesprint.SprintHandler"
 		]
 	},
 	"mixins": [

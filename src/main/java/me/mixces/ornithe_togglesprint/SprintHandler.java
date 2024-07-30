@@ -1,7 +1,7 @@
-package me.mixces.ornithetogglesprint;
+package me.mixces.ornithe_togglesprint;
 
 
-import me.mixces.ornithetogglesprint.config.ConfigOptions;
+import me.mixces.ornithe_togglesprint.config.ConfigOptions;
 import net.ornithemc.osl.entrypoints.api.ModInitializer;
 import net.ornithemc.osl.lifecycle.api.client.MinecraftClientEvents;
 

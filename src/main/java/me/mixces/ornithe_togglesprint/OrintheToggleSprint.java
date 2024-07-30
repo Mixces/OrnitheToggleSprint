@@ -1,6 +1,6 @@
-package me.mixces.ornithetogglesprint;
+package me.mixces.ornithe_togglesprint;
 
-import me.mixces.ornithetogglesprint.config.ConfigOptions;
+import me.mixces.ornithe_togglesprint.config.ConfigOptions;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
