@@ -7,8 +7,8 @@ import net.ornithemc.osl.lifecycle.api.client.MinecraftClientEvents;
 
 public class SprintHandler implements ModInitializer {
 
-	//todo: keep state even after quitting game
-	public static boolean shouldToggle = false;
+	//TODO: keep state even after quitting game
+	public static boolean shouldToggle, shouldReset = false;
 
 	@Override
 	public void init() {

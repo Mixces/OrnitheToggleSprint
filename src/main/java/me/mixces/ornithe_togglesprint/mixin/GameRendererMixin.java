@@ -2,9 +2,9 @@ package me.mixces.ornithe_togglesprint.mixin;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import me.mixces.ornithe_togglesprint.SprintHandler;
-import me.mixces.ornithe_togglesprint.config.ConfigOptions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.Window;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -27,11 +27,19 @@ public class GameRendererMixin {
 		)
 	)
 	private void toggleSprint$showStateGui(float tickDelta, long startTime, CallbackInfo ci) {
-		if (ConfigOptions.toggleSprint && !minecraft.options.debugEnabled) {
+		//TODO: fix holding down sprint key bugging out hud
+		if (!minecraft.options.debugEnabled) {
 			GlStateManager.pushMatrix();
 			GlStateManager.enableBlend();
 			GlStateManager.blendFuncSeparate(770, 771, 1, 0);
-			minecraft.textRenderer.draw("Sprinting: " + getSprintingState(), 4, 4, 0xFFFFFFFF, true);
+			Window screen = new Window(minecraft);
+			minecraft.textRenderer.draw(
+				"[Sprinting (" + getSprintingState(),
+				4,
+				screen.getHeight() - minecraft.textRenderer.fontHeight - 4,
+				0xFFFFFFFF,
+				true
+			);
 			GlStateManager.disableBlend();
 			GlStateManager.popMatrix();
 		}
@@ -39,6 +47,6 @@ public class GameRendererMixin {
 
 	@Unique
 	private String getSprintingState() {
-		return SprintHandler.shouldToggle ? "Toggled" : "Vanilla";
+		return SprintHandler.shouldToggle ? "Toggled)]" : "Vanilla)]";
 	}
 }

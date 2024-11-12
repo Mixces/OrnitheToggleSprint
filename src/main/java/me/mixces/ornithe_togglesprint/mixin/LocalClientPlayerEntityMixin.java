@@ -18,7 +18,10 @@ public abstract class LocalClientPlayerEntityMixin {
 		)
 	)
 	private boolean toggleSprint$setSprintState(boolean original) {
+		if (SprintHandler.shouldReset) {
+			SprintHandler.shouldReset = false;
+			return false;
+		}
 		return (ConfigOptions.toggleSprint && SprintHandler.shouldToggle) || original;
 	}
-
 }

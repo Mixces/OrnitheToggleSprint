@@ -23,6 +23,7 @@ public abstract class ControlsOptionsScreenMixin extends Screen {
 		)
     )
     private void toggleSprint$addGuiButtons(CallbackInfo ci) {
+		//TODO: + add settings square next to config button
 		toggleSprint = new OptionButtonWidget(2004, width / 2 + 5, 42, "Sprint" + toggleSprint$getMode(ConfigOptions.toggleSprint));
         buttons.add(toggleSprint);
     }
@@ -50,5 +51,4 @@ public abstract class ControlsOptionsScreenMixin extends Screen {
 	private String toggleSprint$getMode(boolean option) {
 		return ": " + (option ? "Toggle" : "Hold");
 	}
-
 }
