@@ -27,6 +27,8 @@ dependencies {
 
 	ploceus.addCommonLibraries()
 	ploceus.dependOsl(project.osl_version)
+
+	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 processResources {

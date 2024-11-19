@@ -13,12 +13,15 @@
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/ornithe_togglesprint/icon.png",
-	"environment": "*",
+	"environment": "client",
 	"entrypoints": {
 		"init": [
       "me.mixces.ornithe_togglesprint.OrintheToggleSprint",
       "me.mixces.ornithe_togglesprint.SprintHandler"
-		]
+		],
+    "modmenu": [
+      "me.mixces.ornithe_togglesprint.config.ConfigIntegration"
+    ]
 	},
 	"mixins": [
     "ornithe_togglesprint.mixins.json"

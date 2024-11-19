@@ -2,7 +2,7 @@ package me.mixces.ornithe_togglesprint.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import me.mixces.ornithe_togglesprint.SprintHandler;
-import me.mixces.ornithe_togglesprint.config.ConfigOptions;
+import me.mixces.ornithe_togglesprint.config.Config;
 import net.minecraft.client.entity.living.player.LocalClientPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,10 +18,6 @@ public abstract class LocalClientPlayerEntityMixin {
 		)
 	)
 	private boolean toggleSprint$setSprintState(boolean original) {
-		if (SprintHandler.shouldReset) {
-			SprintHandler.shouldReset = false;
-			return false;
-		}
-		return (ConfigOptions.toggleSprint && SprintHandler.shouldToggle) || original;
+		return (Config.TOGGLE_SPRINT.get() && SprintHandler.shouldToggle) || original;
 	}
 }
