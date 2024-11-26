@@ -9,6 +9,6 @@ public class OrintheToggleSprint implements ModInitializer {
 
 	@Override
 	public void init() {
-		ConfigManager.register(new Config());
+		ConfigManager.register(Config.INSTANCE);
 	}
 }

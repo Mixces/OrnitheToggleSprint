@@ -1,21 +1,36 @@
 package me.mixces.ornithe_togglesprint.config;
 
+import net.minecraft.text.Formatting;
 import net.ornithemc.osl.config.api.ConfigScope;
 import net.ornithemc.osl.config.api.LoadingPhase;
 import net.ornithemc.osl.config.api.config.BaseConfig;
 import net.ornithemc.osl.config.api.config.option.BooleanOption;
 import net.ornithemc.osl.config.api.config.option.IntegerOption;
+import net.ornithemc.osl.config.api.config.option.StringOption;
 import net.ornithemc.osl.config.api.serdes.FileSerializerType;
 import net.ornithemc.osl.config.api.serdes.SerializerTypes;
 
 public class Config extends BaseConfig {
 
+	public static Config INSTANCE = new Config();
+
 	/* Position */
-	public static final IntegerOption HUD_X = new IntegerOption("hudX", null, 0);
-	public static final IntegerOption HUD_Y = new IntegerOption("hudY", null, 0);
+	public final IntegerOption HUD_X = new IntegerOption("hudX", null, 0);
+	public final IntegerOption HUD_Y = new IntegerOption("hudY", null, 0);
 
 	/* Properties */
-	public static final BooleanOption TOGGLE_SPRINT = new BooleanOption("toggleSprint", null, false);
+	public final BooleanOption ENABLED = new BooleanOption("enabled", null, false);
+	public final BooleanOption STATE = new BooleanOption("state", null, false);
+
+	/* Text */
+	public final StringOption SPRINT_TOGGLED_TEXT = new StringOption("sprintToggledText", null, "[Sprinting (Toggled)]");
+	public final StringOption SPRINT_VANILLA_TEXT = new StringOption("sprintVanillaText", null, "[Sprinting (Vanilla)]");
+	public final StringOption FLYING_TEXT = new StringOption("flyingText", null, "[Flying]");
+	public final StringOption SNEAKING_TEXT = new StringOption("sneakingText", null, "[Sneaking]");
+
+	public String getToggleState() {
+		return "Mod: " + (ENABLED.get() ? Formatting.GREEN + "Enabled" : Formatting.RED + "Disabled");
+	}
 
 	@Override
 	public String getNamespace() {
@@ -58,7 +73,12 @@ public class Config extends BaseConfig {
 			"ToggleSprint",
 			HUD_X,
 			HUD_Y,
-			TOGGLE_SPRINT
+			ENABLED,
+			STATE,
+			SPRINT_TOGGLED_TEXT,
+			SPRINT_VANILLA_TEXT,
+			FLYING_TEXT,
+			SNEAKING_TEXT
 		);
 	}
 }

@@ -1,22 +1,28 @@
 package me.mixces.ornithe_togglesprint.config;
 
-import me.mixces.ornithe_togglesprint.SprintHandler;
+import me.mixces.ornithe_togglesprint.handler.SprintHandler;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.Formatting;
 import net.ornithemc.osl.config.api.ConfigManager;
 
 public class ConfigScreen extends Screen {
 
+	private final SprintHandler hud;
+	private final Config config;
 	private final Screen parentScreen;
+	/* hud editor properties */
 	private int hudWidth;
-	private int hudHeight;
+	private final int hudHeight = 9;
+	private final int hudBound = 4;
+	/* mouse movement */
 	private boolean isDragging = false;
 	private int dragOffsetX;
 	private int dragOffsetY;
 
 	public ConfigScreen(Screen parentScreen) {
 		this.parentScreen = parentScreen;
+		this.config = Config.INSTANCE;
+		this.hud = new SprintHandler();
 	}
 
 	@Override
@@ -24,16 +30,19 @@ public class ConfigScreen extends Screen {
 		renderBackground();
 		if (isDragging) {
 			drawGridlines();
-			Config.HUD_X.set(Config.HUD_X.get() + (mouseX - dragOffsetX));
-			Config.HUD_Y.set(Config.HUD_Y.get() + (mouseY - dragOffsetY));
+			config.HUD_X.set(config.HUD_X.get() + (mouseX - dragOffsetX));
+			config.HUD_Y.set(config.HUD_Y.get() + (mouseY - dragOffsetY));
 		}
 		dragOffsetX = mouseX;
 		dragOffsetY = mouseY;
 
-		int x = Config.HUD_X.get();
-		int y = Config.HUD_Y.get();
-		drawOutlineBox(x, y, hudWidth, hudHeight);
-		SprintHandler.drawText(minecraft, x, y);
+		if (config.ENABLED.get()) {
+			int x = config.HUD_X.get();
+			int y = config.HUD_Y.get();
+
+			drawOutlineBox(x, y);
+			hud.drawText(x, y, true);
+		}
 
 		if (!isDragging) {
 			super.render(mouseX, mouseY, tickDelta);
@@ -43,11 +52,11 @@ public class ConfigScreen extends Screen {
 	@Override
 	public void init() {
 		super.init();
-		hudWidth = textRenderer.getWidth(SprintHandler.getText());
-		hudHeight = textRenderer.fontHeight;
-		buttons.add(new ButtonWidget(0, width / 2 - 100, height - 75, getToggleState()));
-		buttons.add(new ButtonWidget(1, width / 2 - 100, height - 51, "Reset Position"));
-		buttons.add(new ButtonWidget(2, width / 2 - 100, height - 27, "Done"));
+		hudWidth = textRenderer.getWidth(hud.getText(true));
+
+		buttons.add(new ButtonWidget(0, width / 2 - 75, height - 75, 150, 20, config.getToggleState()));
+		buttons.add(new ButtonWidget(1, width / 2 - 75, height - 51, 150, 20, "Reset Position"));
+		buttons.add(new ButtonWidget(2, width / 2 - 75, height - 27, 150, 20, "Done"));
 	}
 
 	@Override
@@ -58,15 +67,15 @@ public class ConfigScreen extends Screen {
 		}
 		switch (button.id) {
 			case 0:
-				Config.TOGGLE_SPRINT.set(!Config.TOGGLE_SPRINT.get());
-				button.message = getToggleState();
+				config.ENABLED.set(!config.ENABLED.get());
+				button.message = config.getToggleState();
 				break;
 			case 1:
-				Config.HUD_X.set(4);
-				Config.HUD_Y.set(height - 13);
+				config.HUD_X.set(4);
+				config.HUD_Y.set(height - 13);
 				break;
 			case 2:
-				ConfigManager.save(new Config());
+				ConfigManager.save(Config.INSTANCE);
 				minecraft.openScreen(parentScreen);
 				break;
 		}
@@ -89,7 +98,7 @@ public class ConfigScreen extends Screen {
 	@Override
 	public void removed() {
 		super.removed();
-		ConfigManager.save(new Config());
+		ConfigManager.save(Config.INSTANCE);
 	}
 
 	private void drawGridlines() {
@@ -100,21 +109,15 @@ public class ConfigScreen extends Screen {
 	}
 
 	public boolean isMouseOver(int mouseX, int mouseY) {
-		int offset = 4;
-		int x = Config.HUD_X.get();
-		int y = Config.HUD_Y.get();
-		return mouseX >= x - offset && mouseY >= y - offset && mouseX < x + offset + hudWidth && mouseY < y + offset + hudHeight;
+		int x = config.HUD_X.get();
+		int y = config.HUD_Y.get();
+		return mouseX >= x - hudBound && mouseY >= y - hudBound && mouseX < x + hudBound + hudWidth && mouseY < y + hudBound + hudHeight;
 	}
 
-	private void drawOutlineBox(int x, int y, int width, int height) {
-		int offset = 4;
-		drawHorizontalLine(x - offset, x + width + offset, y - offset, 0x80FFFFFF);
-		drawVerticalLine(x - offset, y - offset, y + height + offset, 0x80FFFFFF);
-		drawHorizontalLine(x - offset, x + width + offset, y + height + offset, 0x80FFFFFF);
-		drawVerticalLine(x + width + offset, y - offset, y + height + offset, 0x80FFFFFF);
-	}
-
-	private String getToggleState() {
-		return "Mod: " + (Config.TOGGLE_SPRINT.get() ? Formatting.GREEN + "Enabled" : Formatting.RED + "Disabled");
+	private void drawOutlineBox(int x, int y) {
+		drawHorizontalLine(x - hudBound, x + hudWidth + hudBound, y - hudBound, 0x80FFFFFF);
+		drawVerticalLine(x - hudBound, y - hudBound, y + hudHeight + hudBound, 0x80FFFFFF);
+		drawHorizontalLine(x - hudBound, x + hudWidth + hudBound, y + hudHeight + hudBound, 0x80FFFFFF);
+		drawVerticalLine(x + hudWidth + hudBound, y - hudBound, y + hudHeight + hudBound, 0x80FFFFFF);
 	}
 }

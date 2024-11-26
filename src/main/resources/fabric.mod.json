@@ -17,7 +17,7 @@
 	"entrypoints": {
 		"init": [
       "me.mixces.ornithe_togglesprint.OrintheToggleSprint",
-      "me.mixces.ornithe_togglesprint.SprintHandler"
+      "me.mixces.ornithe_togglesprint.handler.SprintHandler"
 		],
     "modmenu": [
       "me.mixces.ornithe_togglesprint.config.ConfigIntegration"

@@ -1,13 +1,15 @@
 package me.mixces.ornithe_togglesprint.mixin;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import me.mixces.ornithe_togglesprint.SprintHandler;
+import me.mixces.ornithe_togglesprint.handler.SprintHandler;
 import me.mixces.ornithe_togglesprint.config.Config;
 import me.mixces.ornithe_togglesprint.config.ConfigScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.resource.manager.ResourceManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -18,6 +20,19 @@ public class GameRendererMixin {
 	@Shadow
 	private Minecraft minecraft;
 
+	@Unique
+	private SprintHandler hud;
+
+	@Inject(
+		method = "<init>",
+		at = @At(
+			value = "TAIL"
+		)
+	)
+	private void toggleSprint$initSprintHud(Minecraft minecraft, ResourceManager resourceManager, CallbackInfo ci) {
+		this.hud = new SprintHandler();
+	}
+
 	@Inject(
 		method = "render(FJ)V",
 		at = @At(
@@ -27,12 +42,11 @@ public class GameRendererMixin {
 		)
 	)
 	private void toggleSprint$showStateGui(float tickDelta, long startTime, CallbackInfo ci) {
-		//TODO: fix holding down sprint key bugging out hud
-		if (!minecraft.options.debugEnabled && !(minecraft.screen instanceof ConfigScreen)) {
+		if (Config.INSTANCE.ENABLED.get() && !minecraft.options.debugEnabled && !(minecraft.screen instanceof ConfigScreen)) {
 			GlStateManager.pushMatrix();
 			GlStateManager.enableBlend();
 			GlStateManager.blendFuncSeparate(770, 771, 1, 0);
-			SprintHandler.drawText(minecraft, Config.HUD_X.get(), Config.HUD_Y.get());
+			hud.drawText(Config.INSTANCE.HUD_X.get(), Config.INSTANCE.HUD_Y.get(), false);
 			GlStateManager.disableBlend();
 			GlStateManager.popMatrix();
 		}
