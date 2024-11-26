@@ -17,6 +17,6 @@ public abstract class LocalClientPlayerEntityMixin {
 		)
 	)
 	private boolean toggleSprint$setSprintState(boolean original) {
-		return (Config.INSTANCE.ENABLED.get() && Config.INSTANCE.STATE.get()) || original;
+		return (Config.INSTANCE.TOGGLE_SPRINT_ENABLED.get() && Config.INSTANCE.MOD_ENABLED.get() && Config.INSTANCE.SPRINT_STATE.get()) || original;
 	}
 }

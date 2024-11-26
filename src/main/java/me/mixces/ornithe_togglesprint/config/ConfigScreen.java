@@ -1,13 +1,13 @@
 package me.mixces.ornithe_togglesprint.config;
 
-import me.mixces.ornithe_togglesprint.handler.SprintHandler;
+import me.mixces.ornithe_togglesprint.handler.StateHandler;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.ornithemc.osl.config.api.ConfigManager;
 
 public class ConfigScreen extends Screen {
 
-	private final SprintHandler hud;
+	private final StateHandler hud;
 	private final Config config;
 	private final Screen parentScreen;
 	/* hud editor properties */
@@ -22,7 +22,7 @@ public class ConfigScreen extends Screen {
 	public ConfigScreen(Screen parentScreen) {
 		this.parentScreen = parentScreen;
 		this.config = Config.INSTANCE;
-		this.hud = new SprintHandler();
+		this.hud = new StateHandler();
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class ConfigScreen extends Screen {
 		dragOffsetX = mouseX;
 		dragOffsetY = mouseY;
 
-		if (config.ENABLED.get()) {
+		if (config.MOD_ENABLED.get()) {
 			int x = config.HUD_X.get();
 			int y = config.HUD_Y.get();
 
@@ -54,9 +54,13 @@ public class ConfigScreen extends Screen {
 		super.init();
 		hudWidth = textRenderer.getWidth(hud.getText(true));
 
-		buttons.add(new ButtonWidget(0, width / 2 - 75, height - 75, 150, 20, config.getToggleState()));
-		buttons.add(new ButtonWidget(1, width / 2 - 75, height - 51, 150, 20, "Reset Position"));
-		buttons.add(new ButtonWidget(2, width / 2 - 75, height - 27, 150, 20, "Done"));
+		buttons.add(new ButtonWidget(0, width / 2 - 100, height - 75, config.getToggleState(config.MOD_ENABLED)));
+
+		buttons.add(new ButtonWidget(1, width / 2 - 2 - 50 - 100, height - 51, 150, 20, config.getToggleState(config.TOGGLE_SPRINT_ENABLED)));
+		buttons.add(new ButtonWidget(2, width / 2 + 2, height - 51, 150, 20, config.getToggleState(config.TOGGLE_SNEAK_ENABLED)));
+
+		buttons.add(new ButtonWidget(3, width / 2 - 2 - 50 - 100, height - 27, 150, 20, "Reset Position"));
+		buttons.add(new ButtonWidget(4, width / 2 + 2, height - 27, 150, 20, "Done"));
 	}
 
 	@Override
@@ -67,14 +71,28 @@ public class ConfigScreen extends Screen {
 		}
 		switch (button.id) {
 			case 0:
-				config.ENABLED.set(!config.ENABLED.get());
-				button.message = config.getToggleState();
+				config.MOD_ENABLED.set(!config.MOD_ENABLED.get());
+				button.message = config.getToggleState(config.MOD_ENABLED);
+
+				/* mark button as inactive if mod is disabled */
+				boolean modEnabled = config.MOD_ENABLED.get();
+				buttons.get(1).active = modEnabled;
+				buttons.get(2).active = modEnabled;
+				buttons.get(3).active = modEnabled;
 				break;
 			case 1:
+				config.TOGGLE_SPRINT_ENABLED.set(!config.TOGGLE_SPRINT_ENABLED.get());
+				button.message = config.getToggleState(config.TOGGLE_SPRINT_ENABLED);
+				break;
+			case 2:
+				config.TOGGLE_SNEAK_ENABLED.set(!config.TOGGLE_SNEAK_ENABLED.get());
+				button.message = config.getToggleState(config.TOGGLE_SNEAK_ENABLED);
+				break;
+			case 3:
 				config.HUD_X.set(4);
 				config.HUD_Y.set(height - 13);
 				break;
-			case 2:
+			case 4:
 				ConfigManager.save(Config.INSTANCE);
 				minecraft.openScreen(parentScreen);
 				break;

@@ -1,7 +1,7 @@
 package me.mixces.ornithe_togglesprint.mixin;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import me.mixces.ornithe_togglesprint.handler.SprintHandler;
+import me.mixces.ornithe_togglesprint.handler.StateHandler;
 import me.mixces.ornithe_togglesprint.config.Config;
 import me.mixces.ornithe_togglesprint.config.ConfigScreen;
 import net.minecraft.client.Minecraft;
@@ -21,7 +21,7 @@ public class GameRendererMixin {
 	private Minecraft minecraft;
 
 	@Unique
-	private SprintHandler hud;
+	private StateHandler hud;
 
 	@Inject(
 		method = "<init>",
@@ -30,7 +30,7 @@ public class GameRendererMixin {
 		)
 	)
 	private void toggleSprint$initSprintHud(Minecraft minecraft, ResourceManager resourceManager, CallbackInfo ci) {
-		this.hud = new SprintHandler();
+		this.hud = new StateHandler();
 	}
 
 	@Inject(
@@ -42,7 +42,8 @@ public class GameRendererMixin {
 		)
 	)
 	private void toggleSprint$showStateGui(float tickDelta, long startTime, CallbackInfo ci) {
-		if (Config.INSTANCE.ENABLED.get() && !minecraft.options.debugEnabled && !(minecraft.screen instanceof ConfigScreen)) {
+		if (Config.INSTANCE.MOD_ENABLED.get() && !hud.isEmptyText() &&
+			!minecraft.options.debugEnabled && !(minecraft.screen instanceof ConfigScreen)) {
 			GlStateManager.pushMatrix();
 			GlStateManager.enableBlend();
 			GlStateManager.blendFuncSeparate(770, 771, 1, 0);
