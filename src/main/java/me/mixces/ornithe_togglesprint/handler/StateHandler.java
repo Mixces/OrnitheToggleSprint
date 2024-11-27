@@ -60,8 +60,14 @@ public class StateHandler implements ModInitializer {
 		}
 
 		final LocalClientPlayerEntity player = minecraft.player;
+		if (player.isSneaking() && player.abilities.flying) {
+			return config.DESCENDING_TEXT.get();
+		}
 		if (player.abilities.flying) {
 			return config.FLYING_TEXT.get();
+		}
+		if (player.hasVehicle()) {
+			return config.RIDING_TEXT.get();
 		}
 		if (config.TOGGLE_SNEAK_ENABLED.get() && config.SNEAK_STATE.get()) {
 			return config.SNEAKING_TOGGLED_TEXT.get();

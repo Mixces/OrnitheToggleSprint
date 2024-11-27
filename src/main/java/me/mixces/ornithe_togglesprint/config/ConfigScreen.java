@@ -3,6 +3,7 @@ package me.mixces.ornithe_togglesprint.config;
 import me.mixces.ornithe_togglesprint.handler.StateHandler;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.LockButtonWidget;
 import net.ornithemc.osl.config.api.ConfigManager;
 
 public class ConfigScreen extends Screen {
@@ -10,6 +11,7 @@ public class ConfigScreen extends Screen {
 	private final StateHandler hud;
 	private final Config config;
 	private final Screen parentScreen;
+	private LockButtonWidget lockButton;
 	/* hud editor properties */
 	private int hudWidth;
 	private final int hudHeight = 9;
@@ -44,7 +46,11 @@ public class ConfigScreen extends Screen {
 			hud.drawText(x, y, true);
 		}
 
-		if (!isDragging) {
+		if (isDragging || !lockButton.isLocked()) {
+			lockButton.render(minecraft, mouseX, mouseY);
+		}
+
+		if (!isDragging && lockButton.isLocked()) {
 			super.render(mouseX, mouseY, tickDelta);
 		}
 	}
@@ -54,19 +60,23 @@ public class ConfigScreen extends Screen {
 		super.init();
 		hudWidth = textRenderer.getWidth(hud.getText(true));
 
-		buttons.add(new ButtonWidget(0, width / 2 - 100, height - 75, config.getToggleState(config.MOD_ENABLED)));
+		buttons.add(new ButtonWidget(0, width / 2 - 2 - 50- 100, height - 75, 150, 20, config.getToggleState(config.MOD_ENABLED)));
+		buttons.add(new ButtonWidget(1, width / 2 + 2, height - 75, 150, 20, "Customize Text"));
 
-		buttons.add(new ButtonWidget(1, width / 2 - 2 - 50 - 100, height - 51, 150, 20, config.getToggleState(config.TOGGLE_SPRINT_ENABLED)));
-		buttons.add(new ButtonWidget(2, width / 2 + 2, height - 51, 150, 20, config.getToggleState(config.TOGGLE_SNEAK_ENABLED)));
+		buttons.add(new ButtonWidget(2, width / 2 - 2 - 50 - 100, height - 51, 150, 20, config.getToggleState(config.TOGGLE_SPRINT_ENABLED)));
+		buttons.add(new ButtonWidget(3, width / 2 + 2, height - 51, 150, 20, config.getToggleState(config.TOGGLE_SNEAK_ENABLED)));
 
-		buttons.add(new ButtonWidget(3, width / 2 - 2 - 50 - 100, height - 27, 150, 20, "Reset Position"));
-		buttons.add(new ButtonWidget(4, width / 2 + 2, height - 27, 150, 20, "Done"));
+		buttons.add(new ButtonWidget(4, width / 2 - 2 - 50 - 100, height - 27, 150, 20, "Reset Position"));
+		buttons.add(new ButtonWidget(5, width / 2 + 2, height - 27, 150, 20, "Done"));
+
+		buttons.add(lockButton = new LockButtonWidget(6, width - 27, height - 27));
+		lockButton.setLocked(true);
 	}
 
 	@Override
 	protected void buttonClicked(ButtonWidget button) {
 		super.buttonClicked(button);
-		if (!button.active) {
+		if (!button.active && !(button == lockButton)) {
 			return;
 		}
 		switch (button.id) {
@@ -79,23 +89,30 @@ public class ConfigScreen extends Screen {
 				buttons.get(1).active = modEnabled;
 				buttons.get(2).active = modEnabled;
 				buttons.get(3).active = modEnabled;
+				buttons.get(4).active = modEnabled;
+				lockButton.active = modEnabled;
 				break;
 			case 1:
+				minecraft.openScreen(new TextCustomizationScreen(this));
+				break;
+			case 2:
 				config.TOGGLE_SPRINT_ENABLED.set(!config.TOGGLE_SPRINT_ENABLED.get());
 				button.message = config.getToggleState(config.TOGGLE_SPRINT_ENABLED);
 				break;
-			case 2:
+			case 3:
 				config.TOGGLE_SNEAK_ENABLED.set(!config.TOGGLE_SNEAK_ENABLED.get());
 				button.message = config.getToggleState(config.TOGGLE_SNEAK_ENABLED);
 				break;
-			case 3:
+			case 4:
 				config.HUD_X.set(4);
 				config.HUD_Y.set(height - 13);
 				break;
-			case 4:
+			case 5:
 				ConfigManager.save(Config.INSTANCE);
 				minecraft.openScreen(parentScreen);
 				break;
+			case 6:
+				lockButton.setLocked(!lockButton.isLocked());
 		}
 	}
 

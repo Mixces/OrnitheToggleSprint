@@ -32,8 +32,10 @@ public class Config extends BaseConfig {
 	public final StringOption SPRINT_TOGGLED_TEXT = new StringOption("sprintToggledText", null, "[Sprinting (Toggled)]");
 	public final StringOption SPRINT_VANILLA_TEXT = new StringOption("sprintVanillaText", null, "[Sprinting (Vanilla)]");
 	public final StringOption FLYING_TEXT = new StringOption("flyingText", null, "[Flying]");
+	public final StringOption RIDING_TEXT = new StringOption("ridingText", null, "[Riding]");
 	public final StringOption SNEAKING_TOGGLED_TEXT = new StringOption("sneakingToggledText", null, "[Sneaking (Toggled)]");
 	public final StringOption SNEAKING_VANILLA_TEXT = new StringOption("sneakingVanillaText", null, "[Sneaking (Vanilla)]");
+	public final StringOption DESCENDING_TEXT = new StringOption("descendingText", null, "[Descending]");
 
 	public String getToggleState(BooleanOption option) {
 
@@ -99,8 +101,10 @@ public class Config extends BaseConfig {
 			SPRINT_TOGGLED_TEXT,
 			SPRINT_VANILLA_TEXT,
 			FLYING_TEXT,
+			RIDING_TEXT,
 			SNEAKING_TOGGLED_TEXT,
-			SNEAKING_VANILLA_TEXT
+			SNEAKING_VANILLA_TEXT,
+			DESCENDING_TEXT
 		);
 	}
 }
