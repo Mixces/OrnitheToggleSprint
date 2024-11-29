@@ -30,26 +30,35 @@ public class Config extends BaseConfig {
 
 	/* Text */
 	public final StringOption SPRINT_TOGGLED_TEXT = new StringOption("sprintToggledText", null, "[Sprinting (Toggled)]");
-	public final StringOption SPRINT_VANILLA_TEXT = new StringOption("sprintVanillaText", null, "[Sprinting (Vanilla)]");
+	public final StringOption SPRINT_VANILLA_TEXT = new StringOption("sprintVanillaText", null, "[Sprinting (Key Held)]");
 	public final StringOption FLYING_TEXT = new StringOption("flyingText", null, "[Flying]");
 	public final StringOption RIDING_TEXT = new StringOption("ridingText", null, "[Riding]");
 	public final StringOption SNEAKING_TOGGLED_TEXT = new StringOption("sneakingToggledText", null, "[Sneaking (Toggled)]");
-	public final StringOption SNEAKING_VANILLA_TEXT = new StringOption("sneakingVanillaText", null, "[Sneaking (Vanilla)]");
+	public final StringOption SNEAKING_VANILLA_TEXT = new StringOption("sneakingVanillaText", null, "[Sneaking (Key Held)]");
 	public final StringOption DESCENDING_TEXT = new StringOption("descendingText", null, "[Descending]");
 
 	public String getToggleState(BooleanOption option) {
-
 		String displayName = option.getName()
 			.replaceAll("Enabled", "")
 			.replaceAll("([a-z])([A-Z])", "$1 $2")
 			.trim();
-
 		displayName = Arrays
 			.stream(displayName.split(" "))
 			.map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())
 			.collect(Collectors.joining(" "));
-
 		return displayName + ": " + (option.get() ? Formatting.GREEN + "Enabled" : Formatting.RED + "Disabled");
+	}
+
+	public String getToggleStateNo(BooleanOption option) {
+		String displayName = option.getName()
+			.replaceAll("Enabled", "")
+			.replaceAll("([a-z])([A-Z])", "$1 $2")
+			.trim();
+		displayName = Arrays
+			.stream(displayName.split(" "))
+			.map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())
+			.collect(Collectors.joining(" "));
+		return displayName;
 	}
 
 	@Override

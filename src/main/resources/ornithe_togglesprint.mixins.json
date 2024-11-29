@@ -3,8 +3,6 @@
   "minVersion": "0.8",
   "package": "me.mixces.ornithe_togglesprint.mixin",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [
-  ],
   "client": [
     "GameInputMixin",
     "GameRendererMixin",
@@ -14,5 +12,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-	}
+  }
 }
