@@ -42,7 +42,7 @@ public class GameRendererMixin {
 		)
 	)
 	private void toggleSprint$showStateGui(float tickDelta, long startTime, CallbackInfo ci) {
-		if (Config.INSTANCE.MOD_ENABLED.get() && !hud.isEmptyText() &&
+		if (Config.INSTANCE.ENABLE_MOD_ENABLED.get() && !hud.isEmptyText() &&
 			!minecraft.options.debugEnabled && !(minecraft.screen instanceof ConfigScreen)) {
 			GlStateManager.pushMatrix();
 			GlStateManager.enableBlend();

@@ -1,35 +1,22 @@
 package me.mixces.ornithe_togglesprint.config;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.ornithemc.osl.config.api.config.option.StringOption;
 import org.lwjgl.input.Keyboard;
 
-/*
-			SPRINT_TOGGLED_TEXT,
-			SPRINT_VANILLA_TEXT,
-			FLYING_TEXT,
-			RIDING_TEXT,
-			SNEAKING_TOGGLED_TEXT,
-			SNEAKING_VANILLA_TEXT,
-			DESCENDING_TEXT
- */
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Based off of
- * @see net.minecraft.client.gui.screen.menu.AddServerScreen
- */
 public class TextCustomizationScreen extends Screen {
 
 	private final Config config;
 	private final Screen parentScreen;
-	private TextFieldWidget sprintToggledTextField;
-	private TextFieldWidget sprintVanillaTextField;
-	private TextFieldWidget flyingTextField;
-	private TextFieldWidget ridingTextField;
-	private TextFieldWidget sneakingToggledTextField;
-	private TextFieldWidget sneakingVanillaTextField;
-	private TextFieldWidget descendingTextField;
+	private final List<TextFieldWidget> textFields = new ArrayList<>();
+	private final List<String> labels = new ArrayList<>();
+	private int currentIndex = 0;
 
 	public TextCustomizationScreen(Screen parentScreen) {
 		this.parentScreen = parentScreen;
@@ -40,26 +27,9 @@ public class TextCustomizationScreen extends Screen {
 	public void render(int mouseX, int mouseY, float tickDelta) {
 		renderBackground();
 
-		drawString(textRenderer, "Sprinting Toggle Text", width / 2 - 75, (int) (height * 0.2f) - 12, 0xA0A0A0);
-		sprintToggledTextField.render();
-
-		drawString(textRenderer, "Sprinting Vanilla Text", width / 2 - 2 - 150, (int) (height * 0.35f) - 12, 0xA0A0A0);
-		sprintVanillaTextField.render();
-
-		drawString(textRenderer, "Flying Text", width / 2 + 4, (int) (height * 0.35f) - 12, 0xA0A0A0);
-		flyingTextField.render();
-
-		drawString(textRenderer, "Riding Text", width / 2 - 2 - 150, (int) (height * 0.5f) - 12, 0xA0A0A0);
-		ridingTextField.render();
-
-		drawString(textRenderer, "Sneaking Toggle Text", width / 2 + 4, (int) (height * 0.5f) - 12, 0xA0A0A0);
-		sneakingToggledTextField.render();
-
-		drawString(textRenderer, "Sneaking Vanilla Text", width / 2 - 2 - 150, (int) (height * 0.65f) - 12, 0xA0A0A0);
-		sneakingVanillaTextField.render();
-
-		drawString(textRenderer, "Descending Text", width / 2 + 4, (int) (height * 0.65f) - 12, 0xA0A0A0);
-		descendingTextField.render();
+		TextFieldWidget currentField = textFields.get(currentIndex);
+		drawString(textRenderer, labels.get(currentIndex), width / 2 - 75, height / 2 - 33, 0xA0A0A0);
+		currentField.render();
 
 		super.render(mouseX, mouseY, tickDelta);
 	}
@@ -67,69 +37,32 @@ public class TextCustomizationScreen extends Screen {
 	@Override
 	protected void keyPressed(char chr, int key) {
 		super.keyPressed(chr, key);
-
-		sprintToggledTextField.keyPressed(chr, key);
-		sprintVanillaTextField.keyPressed(chr, key);
-		flyingTextField.keyPressed(chr, key);
-		ridingTextField.keyPressed(chr, key);
-		sneakingToggledTextField.keyPressed(chr, key);
-		sneakingVanillaTextField.keyPressed(chr, key);
-		descendingTextField.keyPressed(chr, key);
-
-		if (key == 15) {
-			cycleFocus();
-		}
-	}
-
-	private void cycleFocus() {
-		if (sprintToggledTextField.isFocused()) {
-			sprintToggledTextField.setFocused(false);
-			sprintVanillaTextField.setFocused(true);
-		} else if (sprintVanillaTextField.isFocused()) {
-			sprintVanillaTextField.setFocused(false);
-			flyingTextField.setFocused(true);
-		} else if (flyingTextField.isFocused()) {
-			flyingTextField.setFocused(false);
-			ridingTextField.setFocused(true);
-		} else if (ridingTextField.isFocused()) {
-			ridingTextField.setFocused(false);
-			sneakingToggledTextField.setFocused(true);
-		} else if (sneakingToggledTextField.isFocused()) {
-			sneakingToggledTextField.setFocused(false);
-			sneakingVanillaTextField.setFocused(true);
-		} else if (sneakingVanillaTextField.isFocused()) {
-			sneakingVanillaTextField.setFocused(false);
-			descendingTextField.setFocused(true);
-		} else {
-			descendingTextField.setFocused(false);
-			sprintToggledTextField.setFocused(true);
-		}
+		textFields.get(currentIndex).keyPressed(chr, key);
 	}
 
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
-		sprintToggledTextField.mouseClicked(mouseX, mouseY, mouseButton);
-		sprintVanillaTextField.mouseClicked(mouseX, mouseY, mouseButton);
-		flyingTextField.mouseClicked(mouseX, mouseY, mouseButton);
-		ridingTextField.mouseClicked(mouseX, mouseY, mouseButton);
-		sneakingToggledTextField.mouseClicked(mouseX, mouseY, mouseButton);
-		sneakingVanillaTextField.mouseClicked(mouseX, mouseY, mouseButton);
-		descendingTextField.mouseClicked(mouseX, mouseY, mouseButton);
+		textFields.get(currentIndex).mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	@Override
 	protected void buttonClicked(ButtonWidget button) {
 		super.buttonClicked(button);
-		if (button.id == 0) {
-			config.SPRINT_TOGGLED_TEXT.set(sprintToggledTextField.getText());
-			config.SPRINT_VANILLA_TEXT.set(sprintVanillaTextField.getText());
-			config.FLYING_TEXT.set(flyingTextField.getText());
-			config.RIDING_TEXT.set(ridingTextField.getText());
-			config.SNEAKING_TOGGLED_TEXT.set(sneakingToggledTextField.getText());
-			config.SNEAKING_VANILLA_TEXT.set(sneakingVanillaTextField.getText());
-			config.DESCENDING_TEXT.set(descendingTextField.getText());
-			minecraft.openScreen(parentScreen);
+		if (!button.active) {
+			return;
+		}
+		switch (button.id) {
+			case 0:
+				cycle(-1);
+				break;
+			case 1:
+				cycle(1);
+				break;
+			case 2:
+				saveConfig();
+				minecraft.openScreen(parentScreen);
+				break;
 		}
 	}
 
@@ -138,45 +71,62 @@ public class TextCustomizationScreen extends Screen {
 		super.init();
 		Keyboard.enableRepeatEvents(true);
 		buttons.clear();
-		buttons.add(new ButtonWidget(0, width / 2 - 75, height - 27, 150, 20, "Save & Exit"));
 
-		sprintToggledTextField = new TextFieldWidget(0, textRenderer, width / 2 - 75, (int) (height * 0.2f), 150, 20);
-		sprintToggledTextField.setFocused(true);
-		sprintToggledTextField.setText(config.SPRINT_TOGGLED_TEXT.get());
+		addTextFieldWidget("Sprinting Toggle Text", config.SPRINT_TOGGLED_TEXT);
+		addTextFieldWidget("Sprinting Vanilla Text", config.SPRINT_VANILLA_TEXT);
+		addTextFieldWidget("Flying Text", config.FLYING_TEXT);
+		addTextFieldWidget("Riding Text", config.RIDING_TEXT);
+		addTextFieldWidget("Sneaking Toggle Text", config.SNEAKING_TOGGLED_TEXT);
+		addTextFieldWidget("Sneaking Vanilla Text", config.SNEAKING_VANILLA_TEXT);
+		addTextFieldWidget("Descending Text", config.DESCENDING_TEXT);
 
-		sprintVanillaTextField = new TextFieldWidget(1, textRenderer, width / 2 - 2 - 150, (int) (height * 0.35), 150, 20);
-		sprintVanillaTextField.setText(config.SPRINT_VANILLA_TEXT.get());
+		buttons.add(new ButtonWidget(0, width / 2 - 125, height / 2 - 20, 40, 20, "<-"));
+		buttons.add(new ButtonWidget(1, width / 2 + 85, height / 2 - 20, 40, 20, "->"));
+		buttons.add(new ButtonWidget(2, width / 2 - 75, height - 27, 150, 20, "Save & Exit"));
+	}
 
-		flyingTextField = new TextFieldWidget(2, textRenderer, width / 2 + 4, (int) (height * 0.35), 150, 20);
-		flyingTextField.setText(config.FLYING_TEXT.get());
-
-		ridingTextField = new TextFieldWidget(3, textRenderer, width / 2 - 2 - 150, (int) (height * 0.5), 150, 20);
-		ridingTextField.setText(config.RIDING_TEXT.get());
-
-		sneakingToggledTextField = new TextFieldWidget(4, textRenderer, width / 2 + 4, (int) (height * 0.5), 150, 20);
-		sneakingToggledTextField.setText(config.SNEAKING_TOGGLED_TEXT.get());
-
-		sneakingVanillaTextField = new TextFieldWidget(5, textRenderer, width / 2 - 2 - 150, (int) (height * 0.65), 150, 20);
-		sneakingVanillaTextField.setText(config.SNEAKING_VANILLA_TEXT.get());
-
-		descendingTextField = new TextFieldWidget(6, textRenderer, width / 2 + 4, (int) (height * 0.65), 150, 20);
-		descendingTextField.setText(config.DESCENDING_TEXT.get());
+	@Override
+	public void resize(Minecraft minecraft, int width, int height) {
+		super.resize(minecraft, width, height);
+		/* for some reason this is required */
+		for (TextFieldWidget textField : textFields) {
+			textField.x = width / 2 - 75;
+			textField.y = height / 2 - 20;
+		}
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
-		sprintToggledTextField.tick();
-		sprintVanillaTextField.tick();
-		flyingTextField.tick();
-		ridingTextField.tick();
-		sneakingToggledTextField.tick();
-		sneakingVanillaTextField.tick();
-		descendingTextField.tick();
+		textFields.get(currentIndex).tick();
 	}
 
 	@Override
 	public void removed() {
 		super.removed();
+		saveConfig();
+	}
+
+	private void addTextFieldWidget(String label, StringOption option) {
+		TextFieldWidget textField = new TextFieldWidget(3, textRenderer, width / 2 - 75, height / 2 - 20, 150, 20);
+		textField.setText(option.get());
+		textFields.add(textField);
+		labels.add(label);
+	}
+
+	private void saveConfig() {
+		config.SPRINT_TOGGLED_TEXT.set(textFields.get(0).getText());
+		config.SPRINT_VANILLA_TEXT.set(textFields.get(1).getText());
+		config.FLYING_TEXT.set(textFields.get(2).getText());
+		config.RIDING_TEXT.set(textFields.get(3).getText());
+		config.SNEAKING_TOGGLED_TEXT.set(textFields.get(4).getText());
+		config.SNEAKING_VANILLA_TEXT.set(textFields.get(5).getText());
+		config.DESCENDING_TEXT.set(textFields.get(6).getText());
+	}
+
+	private void cycle(int direction) {
+		textFields.get(currentIndex).setFocused(false);
+		currentIndex = (currentIndex + direction + textFields.size()) % textFields.size();
+		textFields.get(currentIndex).setFocused(true);
 	}
 }

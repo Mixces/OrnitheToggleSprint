@@ -41,6 +41,6 @@ public class SwitchWidget extends ButtonWidget {
 		drawTexture(toggleX + toggleWidth, y, 200 - toggleWidth, 66 + v, toggleWidth, boxHeight);
 		drawTexture(toggleX + toggleWidth, y + boxHeight, 200 - toggleWidth, 76 + v, toggleWidth, boxHeight);
 
-		drawCenteredString(textRenderer, message, x - 40, y + height / 4, 0xFFFFFF);
+		drawString(textRenderer, message, x - 80, y + height / 4, 0xFFFFFF);
 	}
 }

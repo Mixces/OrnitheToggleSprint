@@ -22,7 +22,7 @@ public class Config extends BaseConfig {
 	public final IntegerOption HUD_Y = new IntegerOption("hudY", null, 0);
 
 	/* Properties */
-	public final BooleanOption MOD_ENABLED = new BooleanOption("modEnabled", null, true);
+	public final BooleanOption ENABLE_MOD_ENABLED = new BooleanOption("enableModEnabled", null, true);
 	public final BooleanOption TOGGLE_SPRINT_ENABLED = new BooleanOption("toggleSprintEnabled", null, true);
 	public final BooleanOption TOGGLE_SNEAK_ENABLED = new BooleanOption("toggleSneakEnabled", null, false);
 	public final BooleanOption SPRINT_STATE = new BooleanOption("sprintState", null, false);
@@ -102,7 +102,7 @@ public class Config extends BaseConfig {
 			"ToggleSprint",
 			HUD_X,
 			HUD_Y,
-			MOD_ENABLED,
+			ENABLE_MOD_ENABLED,
 			TOGGLE_SPRINT_ENABLED,
 			TOGGLE_SNEAK_ENABLED,
 			SPRINT_STATE,

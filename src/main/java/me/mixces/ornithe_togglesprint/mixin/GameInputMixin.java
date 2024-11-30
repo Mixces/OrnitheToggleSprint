@@ -29,7 +29,7 @@ public class GameInputMixin extends PlayerInput {
 		)
 	)
 	private void toggleSprint$setSneakState(CallbackInfo ci) {
-		if (Config.INSTANCE.TOGGLE_SNEAK_ENABLED.get() && Config.INSTANCE.MOD_ENABLED.get() && Minecraft.getInstance().screen == null) {
+		if (Config.INSTANCE.TOGGLE_SNEAK_ENABLED.get() && Config.INSTANCE.ENABLE_MOD_ENABLED.get() && Minecraft.getInstance().screen == null) {
 			sneaking = Config.INSTANCE.SNEAK_STATE.get() || options.sneakKey.isPressed();
 		}
 	}

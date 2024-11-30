@@ -36,10 +36,13 @@ public class ConfigScreen extends Screen {
 		dragOffsetX = mouseX;
 		dragOffsetY = mouseY;
 
-		if (config.MOD_ENABLED.get()) {
+		if (config.ENABLE_MOD_ENABLED.get()) {
 			int x = config.HUD_X.get();
 			int y = config.HUD_Y.get();
 
+			if (isMouseOver(mouseX, mouseY)) {
+				drawSelectionBox(x, y);
+			}
 			drawOutlineBox(x, y);
 			hud.drawText(x, y, true);
 		}
@@ -54,17 +57,13 @@ public class ConfigScreen extends Screen {
 		super.init();
 		hudWidth = textRenderer.getWidth(hud.getText(true));
 
-		buttons.add(new ButtonWidget(0, width / 2 - 2 - 50- 100, height - 75, 150, 20, config.getToggleState(config.MOD_ENABLED)));
-		buttons.add(new ButtonWidget(1, width / 2 + 2, height - 75, 150, 20, "Customize Text"));
+		buttons.add(new SwitchWidget(0, width / 2 + 27, height / 2 - 48, config, config.ENABLE_MOD_ENABLED));
+		buttons.add(new SwitchWidget(1, width / 2 + 27, height / 2 - 24, config, config.TOGGLE_SPRINT_ENABLED));
+		buttons.add(new SwitchWidget(2, width / 2 + 27, height / 2, config, config.TOGGLE_SNEAK_ENABLED));
+		buttons.add(new ButtonWidget(3, width / 2 - 75, height / 2 + 24, 150, 20, "Customize Text"));
 
-//		buttons.add(new ButtonWidget(2, width / 2 - 2 - 50 - 100, height - 51, 150, 20, config.getToggleState(config.TOGGLE_SPRINT_ENABLED)));
-//		buttons.add(new ButtonWidget(3, width / 2 + 2, height - 51, 150, 20, config.getToggleState(config.TOGGLE_SNEAK_ENABLED)));
-
-		buttons.add(new ButtonWidget(2, width / 2 - 2 - 50 - 100, height - 27, 150, 20, "Reset Position"));
-		buttons.add(new ButtonWidget(3, width / 2 + 2, height - 27, 150, 20, "Done"));
-
-		buttons.add(new SwitchWidget(4, width / 2, height / 2 - 24, config, config.TOGGLE_SPRINT_ENABLED));
-		buttons.add(new SwitchWidget(5, width / 2, height / 2, config, config.TOGGLE_SNEAK_ENABLED));
+		buttons.add(new ButtonWidget(4, width / 2 - 154, height - 27, 150, 20, "Reset Position"));
+		buttons.add(new ButtonWidget(5, width / 2 + 4, height - 27, 150, 20, "Done"));
 	}
 
 	@Override
@@ -75,44 +74,34 @@ public class ConfigScreen extends Screen {
 		}
 		switch (button.id) {
 			case 0:
-				config.MOD_ENABLED.set(!config.MOD_ENABLED.get());
-				button.message = config.getToggleState(config.MOD_ENABLED);
+				config.ENABLE_MOD_ENABLED.set(!config.ENABLE_MOD_ENABLED.get());
+				button.message = config.getToggleStateNo(config.ENABLE_MOD_ENABLED);
 
 				/* mark button as inactive if mod is disabled */
-				boolean modEnabled = config.MOD_ENABLED.get();
+				boolean modEnabled = config.ENABLE_MOD_ENABLED.get();
 				buttons.get(1).active = modEnabled;
 				buttons.get(2).active = modEnabled;
 				buttons.get(3).active = modEnabled;
 				buttons.get(4).active = modEnabled;
-				buttons.get(6).active = modEnabled;
-				buttons.get(7).active = modEnabled;
 				break;
 			case 1:
-				minecraft.openScreen(new TextCustomizationScreen(this));
-				break;
-//			case 2:
-//				config.TOGGLE_SPRINT_ENABLED.set(!config.TOGGLE_SPRINT_ENABLED.get());
-//				button.message = config.getToggleState(config.TOGGLE_SPRINT_ENABLED);
-//				break;
-//			case 3:
-//				config.TOGGLE_SNEAK_ENABLED.set(!config.TOGGLE_SNEAK_ENABLED.get());
-//				button.message = config.getToggleState(config.TOGGLE_SNEAK_ENABLED);
-//				break;
-			case 2:
-				config.HUD_X.set(4);
-				config.HUD_Y.set(height - 13);
-				break;
-			case 3:
-				ConfigManager.save(Config.INSTANCE);
-				minecraft.openScreen(parentScreen);
-				break;
-			case 4:
 				config.TOGGLE_SPRINT_ENABLED.set(!config.TOGGLE_SPRINT_ENABLED.get());
 				button.message = config.getToggleStateNo(config.TOGGLE_SPRINT_ENABLED);
 				break;
-			case 5:
+			case 2:
 				config.TOGGLE_SNEAK_ENABLED.set(!config.TOGGLE_SNEAK_ENABLED.get());
 				button.message = config.getToggleStateNo(config.TOGGLE_SNEAK_ENABLED);
+				break;
+			case 3:
+				minecraft.openScreen(new TextCustomizationScreen(this));
+				break;
+			case 4:
+				config.HUD_X.set(4);
+				config.HUD_Y.set(height - 13);
+				break;
+			case 5:
+				ConfigManager.save(Config.INSTANCE);
+				minecraft.openScreen(parentScreen);
 				break;
 		}
 	}
@@ -148,6 +137,10 @@ public class ConfigScreen extends Screen {
 		int x = config.HUD_X.get();
 		int y = config.HUD_Y.get();
 		return mouseX >= x - hudBound && mouseY >= y - hudBound && mouseX < x + hudBound + hudWidth && mouseY < y + hudBound + hudHeight;
+	}
+
+	private void drawSelectionBox(int x, int y) {
+		fill(x - hudBound, y - hudBound, x + hudWidth + hudBound, y + hudHeight + hudBound, 0x40FFFFFF);
 	}
 
 	private void drawOutlineBox(int x, int y) {

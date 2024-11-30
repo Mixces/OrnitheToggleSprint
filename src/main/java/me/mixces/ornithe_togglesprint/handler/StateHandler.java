@@ -21,7 +21,7 @@ public class StateHandler implements ModInitializer {
 	@Override
 	public void init() {
 		MinecraftClientEvents.TICK_END.register(client -> {
-			if (!config.TOGGLE_SPRINT_ENABLED.get() || !config.MOD_ENABLED.get()) return;
+			if (!config.TOGGLE_SPRINT_ENABLED.get() || !config.ENABLE_MOD_ENABLED.get()) return;
 			if (client.options.sprintKey.consumeClick()) {
 				if (!sprintHeld) {
 					config.SPRINT_STATE.set(!config.SPRINT_STATE.get());
@@ -33,7 +33,7 @@ public class StateHandler implements ModInitializer {
 		});
 
 		MinecraftClientEvents.TICK_END.register(client -> {
-			if (!config.TOGGLE_SNEAK_ENABLED.get() || !config.MOD_ENABLED.get()) return;
+			if (!config.TOGGLE_SNEAK_ENABLED.get() || !config.ENABLE_MOD_ENABLED.get()) return;
 			if (client.options.sneakKey.consumeClick()) {
 				if (!sneakHeld) {
 					config.SNEAK_STATE.set(!config.SNEAK_STATE.get());
