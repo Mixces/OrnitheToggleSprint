@@ -1,6 +1,5 @@
 package me.mixces.ornithe_togglesprint.config;
 
-import net.minecraft.text.Formatting;
 import net.ornithemc.osl.config.api.ConfigScope;
 import net.ornithemc.osl.config.api.LoadingPhase;
 import net.ornithemc.osl.config.api.config.BaseConfig;
@@ -38,18 +37,6 @@ public class Config extends BaseConfig {
 	public final StringOption DESCENDING_TEXT = new StringOption("descendingText", null, "[Descending]");
 
 	public String getToggleState(BooleanOption option) {
-		String displayName = option.getName()
-			.replaceAll("Enabled", "")
-			.replaceAll("([a-z])([A-Z])", "$1 $2")
-			.trim();
-		displayName = Arrays
-			.stream(displayName.split(" "))
-			.map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())
-			.collect(Collectors.joining(" "));
-		return displayName + ": " + (option.get() ? Formatting.GREEN + "Enabled" : Formatting.RED + "Disabled");
-	}
-
-	public String getToggleStateNo(BooleanOption option) {
 		String displayName = option.getName()
 			.replaceAll("Enabled", "")
 			.replaceAll("([a-z])([A-Z])", "$1 $2")

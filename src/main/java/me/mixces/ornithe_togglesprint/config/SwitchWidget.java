@@ -11,7 +11,7 @@ public class SwitchWidget extends ButtonWidget {
 	public final BooleanOption option;
 
 	public SwitchWidget(int id, int x, int y, Config config, BooleanOption option) {
-		super(id, x, y, 28, 20, config.getToggleStateNo(option));
+		super(id, x, y, 28, 20, config.getToggleState(option));
 		this.option = option;
 	}
 

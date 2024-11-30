@@ -3,7 +3,6 @@ package me.mixces.ornithe_togglesprint.config;
 import me.mixces.ornithe_togglesprint.handler.StateHandler;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.ornithemc.osl.config.api.ConfigManager;
 
 public class ConfigScreen extends Screen {
 
@@ -75,7 +74,7 @@ public class ConfigScreen extends Screen {
 		switch (button.id) {
 			case 0:
 				config.ENABLE_MOD_ENABLED.set(!config.ENABLE_MOD_ENABLED.get());
-				button.message = config.getToggleStateNo(config.ENABLE_MOD_ENABLED);
+				button.message = config.getToggleState(config.ENABLE_MOD_ENABLED);
 
 				/* mark button as inactive if mod is disabled */
 				boolean modEnabled = config.ENABLE_MOD_ENABLED.get();
@@ -86,11 +85,11 @@ public class ConfigScreen extends Screen {
 				break;
 			case 1:
 				config.TOGGLE_SPRINT_ENABLED.set(!config.TOGGLE_SPRINT_ENABLED.get());
-				button.message = config.getToggleStateNo(config.TOGGLE_SPRINT_ENABLED);
+				button.message = config.getToggleState(config.TOGGLE_SPRINT_ENABLED);
 				break;
 			case 2:
 				config.TOGGLE_SNEAK_ENABLED.set(!config.TOGGLE_SNEAK_ENABLED.get());
-				button.message = config.getToggleStateNo(config.TOGGLE_SNEAK_ENABLED);
+				button.message = config.getToggleState(config.TOGGLE_SNEAK_ENABLED);
 				break;
 			case 3:
 				minecraft.openScreen(new TextCustomizationScreen(this));
@@ -100,7 +99,6 @@ public class ConfigScreen extends Screen {
 				config.HUD_Y.set(height - 13);
 				break;
 			case 5:
-				ConfigManager.save(Config.INSTANCE);
 				minecraft.openScreen(parentScreen);
 				break;
 		}
@@ -123,7 +121,6 @@ public class ConfigScreen extends Screen {
 	@Override
 	public void removed() {
 		super.removed();
-		ConfigManager.save(Config.INSTANCE);
 	}
 
 	private void drawGridlines() {
