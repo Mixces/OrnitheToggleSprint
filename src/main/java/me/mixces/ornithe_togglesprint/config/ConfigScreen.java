@@ -47,6 +47,7 @@ public class ConfigScreen extends Screen {
 		}
 
 		if (!isDragging) {
+			drawCenteredString(textRenderer, "Toggle Sprint", width / 2, 15, 0xFFFFFF);
 			super.render(mouseX, mouseY, tickDelta);
 		}
 	}

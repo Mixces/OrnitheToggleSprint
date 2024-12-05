@@ -31,6 +31,7 @@ public class TextCustomizationScreen extends Screen {
 		drawString(textRenderer, labels.get(currentIndex), width / 2 - 75, height / 2 - 33, 0xA0A0A0);
 		currentField.render();
 
+		drawCenteredString(textRenderer, "Toggle Sprint", width / 2, 15, 0xFFFFFF);
 		super.render(mouseX, mouseY, tickDelta);
 	}
 
